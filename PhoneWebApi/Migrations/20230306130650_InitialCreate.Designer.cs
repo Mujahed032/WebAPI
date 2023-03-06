@@ -11,7 +11,7 @@ using PhoneWebApi.Data;
 namespace PhoneWebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230222125303_InitialCreate")]
+    [Migration("20230306130650_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

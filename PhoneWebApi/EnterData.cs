@@ -19,6 +19,7 @@ namespace PhoneWebApi
             var categoryWindows = new Category() {  PhoneType = "Windows" };
 
             var phoneSamsungS20 = new Phone() { Category = categoryAndroid, Name = "Samsung S20"};
+            var phoneSamsungS10 = new Phone() { Category = categoryAndroid, Name = "Samsung S10" };
             var phoneIphone6 = new Phone() { Category = categoryIphone, Name = "Iphone 6"};
             var phoneNokia95 = new Phone() { Category = categoryWindows, Name = "Nokia N95" };
 

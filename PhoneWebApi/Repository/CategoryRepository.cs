@@ -25,21 +25,36 @@ namespace PhoneWebApi.Repository
 
         public Category GetCategoryByPhoneType(string PhoneType)
         {
-           var categorries = _context.phones.Include(p => p.Category ).Where(c => c.).FirstOrDefault();
-            return Category.
+            throw new NotImplementedException();
         }
 
         public ICollection<Phone> GetPhonesByCategory(int CategoryId)
         {
-            var category = _context.categories.Include(p => p.PhoneType).Where(c => c.Id == CategoryId).FirstOrDefault();
-            return category.PhoneType;
+            throw new NotImplementedException();
         }
 
         public ICollection<User> GetUsersByCategory(int CategoryId)
         {
-           return _context.categories.Where( u => u.)
+            throw new NotImplementedException();
+        }
+
+        //public Category GetCategoryByPhoneType(string PhoneType)
+        //{
+        //   var categorries = _context.phones.Include(p => p.Category ).Where(c => c.).FirstOrDefault();
+        //    return Category.
+        //}
+
+        //public ICollection<Phone> GetPhonesByCategory(int CategoryId)
+        //{
+        //    var category = _context.categories.Include(p => p.PhoneType).Where(c => c.Id == CategoryId).FirstOrDefault();
+        //    return category.PhoneType;
+        //}
+
+        //public ICollection<User> GetUsersByCategory(int CategoryId)
+        //{
+        //   return _context.categories.Where( u => u.)
 
 
-         }
+        // }
     }
 }

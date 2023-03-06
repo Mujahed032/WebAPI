@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//SeedData(app);
+SeedData(app);
 
 app.UseHttpsRedirection();
 
