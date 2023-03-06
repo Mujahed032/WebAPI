@@ -19,7 +19,7 @@ namespace PhoneWebApi.Repository
             return _context.users.Any(u => u.Id == UserID);
         }
 
-        public ICollection<Phone> GetPhoneByUser(int userId)
+        public ICollection<Phone> GetPhonesByUser(int userId)
         {
             var user = _context.users.Where(u => u.Id == userId).FirstOrDefault();
             return user.phones;

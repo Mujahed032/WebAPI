@@ -10,7 +10,7 @@ namespace PhoneWebApi.Interfaces
 
         public User GetUserByName(string Name);
 
-        public ICollection<Phone> GetPhoneByUser(int userId);
+        public ICollection<Phone> GetPhonesByUser(int userId);
 
         public bool DoesUserExists(int UserID);
 

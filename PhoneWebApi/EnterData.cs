@@ -12,7 +12,7 @@ namespace PhoneWebApi
             _context = context;
         }
 
-        public void insertData()
+        public void insertData() 
         {
             var categoryAndroid = new Category() {  PhoneType = "Android" };
             var categoryIphone = new Category() {  PhoneType = "IOS" };
