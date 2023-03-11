@@ -1,8 +1,10 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PhoneWebApi.Dto;
 using PhoneWebApi.Interfaces;
 using PhoneWebApi.Models;
-using PhoneWebApi.Repository;
+
 
 namespace PhoneWebApi.Controllers
 {
@@ -11,17 +13,19 @@ namespace PhoneWebApi.Controllers
     public class PhoneController : Controller
     {
         private readonly IPhoneRepository _phoneRepository;
+        private readonly IMapper _mapper;
 
-        public PhoneController(IPhoneRepository phoneRepository)
+        public PhoneController(IPhoneRepository phoneRepository, IMapper mapper)
         {
             _phoneRepository = phoneRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Phone>))]
         public IActionResult GetPhones()
         {
-            var phone = _phoneRepository.GetPhones();
+            var phone = _mapper.Map<List<PhoneDto>>(_phoneRepository.GetPhones());
 
             if (!ModelState.IsValid)
             {
@@ -35,7 +39,7 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         public IActionResult GetUsersByPhone(int phoneId)
         {
-            var users = _phoneRepository.GetUsersByPhone(phoneId);
+            var users = _mapper.Map<List<Phone>>(_phoneRepository.GetUsersByPhone(phoneId));
 
             if (!ModelState.IsValid)
             {
@@ -45,12 +49,12 @@ namespace PhoneWebApi.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{pokeId}")]
+        [HttpGet("{phoneId}")]
         [ProducesResponseType(200, Type = typeof(Phone))]
         [ProducesResponseType(400)]
-        public IActionResult GetPhone(int pokeId)
+        public IActionResult GetPhone(int phoneId)
         {
-            if (!_phoneRepository.PhoneExists(pokeId))
+            if (!_phoneRepository.PhoneExists(phoneId))
             {
                 return NotFound();
             }
@@ -60,7 +64,7 @@ namespace PhoneWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(_phoneRepository.GetPhone(pokeId));
+            return Ok(_phoneRepository.GetPhone(phoneId));
         }
 
 

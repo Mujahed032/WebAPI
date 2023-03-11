@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using PhoneWebApi.Data;
 using PhoneWebApi.Interfaces;
 using PhoneWebApi.Models;
@@ -25,36 +26,29 @@ namespace PhoneWebApi.Repository
 
         public Category GetCategoryByPhoneType(string PhoneType)
         {
-            throw new NotImplementedException();
+            var phones = _context.phones.Where(p => p.Category.PhoneType == PhoneType).FirstOrDefault();
+            return phones.Category;
+
         }
+      
 
         public ICollection<Phone> GetPhonesByCategory(int CategoryId)
         {
-            throw new NotImplementedException();
+            var phones = _context.phones.Include(p => p.Category).Where(ph => ph.Category.Id ==CategoryId).ToList();
+            return phones;
         }
 
         public ICollection<User> GetUsersByCategory(int CategoryId)
         {
-            throw new NotImplementedException();
+           
+           var phones = _context.phones.Include(p => p.Users).Where(ph => ph.Category.Id ==CategoryId).ToList();
+            var users = new List<User>();
+            foreach (var phone in phones)
+                users.AddRange(phone.Users);
+            return users;
+            
         }
 
-        //public Category GetCategoryByPhoneType(string PhoneType)
-        //{
-        //   var categorries = _context.phones.Include(p => p.Category ).Where(c => c.).FirstOrDefault();
-        //    return Category.
-        //}
 
-        //public ICollection<Phone> GetPhonesByCategory(int CategoryId)
-        //{
-        //    var category = _context.categories.Include(p => p.PhoneType).Where(c => c.Id == CategoryId).FirstOrDefault();
-        //    return category.PhoneType;
-        //}
-
-        //public ICollection<User> GetUsersByCategory(int CategoryId)
-        //{
-        //   return _context.categories.Where( u => u.)
-
-
-        // }
     }
 }
