@@ -9,6 +9,8 @@ namespace PhoneWebApi.Helper
         public MappingProfile()
         {
             CreateMap<Phone, PhoneDto>();
+
+            CreateMap<User, UserDto>();
         }
     }
 }

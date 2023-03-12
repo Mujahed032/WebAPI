@@ -1,4 +1,5 @@
-﻿using PhoneWebApi.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneWebApi.Data;
 using PhoneWebApi.Interfaces;
 using PhoneWebApi.Models;
 
@@ -21,7 +22,7 @@ namespace PhoneWebApi.Repository
 
         public ICollection<Phone> GetPhonesByUser(int userId)
         {
-            var user = _context.users.Where(u => u.Id == userId).FirstOrDefault();
+            var user = _context.users.Include(u => u.phones).Where(uh => uh.Id == userId).FirstOrDefault();
             return user.phones;
         }
 

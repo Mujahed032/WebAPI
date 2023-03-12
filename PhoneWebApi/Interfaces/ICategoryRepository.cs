@@ -7,6 +7,8 @@ namespace PhoneWebApi.Interfaces
 
       public Category GetCategoryById(int id);
 
+      public ICollection<Category> GetAllCategories();
+
       public Category GetCategoryByPhoneType(string PhoneType);
 
       public bool CategoriesExists(int CategoryId);

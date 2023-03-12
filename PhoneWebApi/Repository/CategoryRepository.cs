@@ -19,6 +19,11 @@ namespace PhoneWebApi.Repository
             return _context.categories.Any(c => c.Id == CategoryId);
         }
 
+        public ICollection<Category> GetAllCategories()
+        {
+            return _context.categories.OrderBy(c => c.Id).ToList(); 
+        }
+
         public Category GetCategoryById(int id)
         {
             return _context.categories.Where(c => c.Id == id).FirstOrDefault();

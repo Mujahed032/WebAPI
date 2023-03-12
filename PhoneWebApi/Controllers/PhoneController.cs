@@ -39,14 +39,14 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         public IActionResult GetUsersByPhone(int phoneId)
         {
-            var users = _mapper.Map<List<Phone>>(_phoneRepository.GetUsersByPhone(phoneId));
+            var user = _mapper.Map<List<UserDto>>(_phoneRepository.GetUsersByPhone(phoneId));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(users);
+            return Ok(user);
         }
 
         [HttpGet("{phoneId}")]
@@ -58,15 +58,28 @@ namespace PhoneWebApi.Controllers
             {
                 return NotFound();
             }
-
-            if (!ModelState.IsValid)
+         var phone = _mapper.Map<PhoneDto>(_phoneRepository.GetPhone(phoneId));
+            if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            return Ok(phone);
 
-            return Ok(_phoneRepository.GetPhone(phoneId));
         }
 
+        [HttpGet("/phonename")]
+        [ProducesResponseType (200, Type = typeof(Phone))]
+        [ProducesResponseType (400)]
+        public IActionResult GetPhone(string name)
+        {
+            var phone =_mapper.Map<PhoneDto>(_phoneRepository.GetPhone(name));
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(phone);
+        }
 
     }
 }
