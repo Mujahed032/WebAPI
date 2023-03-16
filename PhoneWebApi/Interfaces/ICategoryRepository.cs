@@ -16,5 +16,9 @@ namespace PhoneWebApi.Interfaces
       public ICollection<Phone> GetPhonesByCategory(int CategoryId);
 
       public ICollection<User> GetUsersByCategory(int CategoryId);
+
+      public bool CreateCategory(Category category);
+
+      public bool Save();
     }
 }

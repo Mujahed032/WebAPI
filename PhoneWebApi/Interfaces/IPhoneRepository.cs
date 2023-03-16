@@ -15,5 +15,9 @@ namespace PhoneWebApi.Interfaces
 
         public bool PhoneExists(int phoneId);
         public Category GetCategoryByPhone(int phoneId);
+
+        public bool CreatePhone(Phone phone);
+
+        public bool save();
     }
 }

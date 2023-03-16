@@ -19,6 +19,12 @@ namespace PhoneWebApi.Repository
             return _context.categories.Any(c => c.Id == CategoryId);
         }
 
+        public bool CreateCategory(Category category)
+        {
+            _context.Add(category);
+            return Save();
+        }
+
         public ICollection<Category> GetAllCategories()
         {
             return _context.categories.OrderBy(c => c.Id).ToList(); 
@@ -54,6 +60,10 @@ namespace PhoneWebApi.Repository
             
         }
 
-
+        public bool Save()
+        {
+                 var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

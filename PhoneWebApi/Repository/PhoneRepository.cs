@@ -47,5 +47,18 @@ namespace PhoneWebApi.Repository
             var phone = _context.phones.Include(c => c.Category).Where(p => p.Id == phoneId).FirstOrDefault();
             return phone.Category;
         }
+
+        public bool CreatePhone(Phone phone)
+        {
+            _context.Add(phone);
+            return save();
+        }
+
+        public bool save()
+        {
+         var saved = _context.SaveChanges();
+
+           return saved > 0 ? true : false;
+        }
     }
 }

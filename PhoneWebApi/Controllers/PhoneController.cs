@@ -13,11 +13,13 @@ namespace PhoneWebApi.Controllers
     public class PhoneController : Controller
     {
         private readonly IPhoneRepository _phoneRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public PhoneController(IPhoneRepository phoneRepository, IMapper mapper)
+        public PhoneController(IPhoneRepository phoneRepository,IUserRepository userRepository, IMapper mapper)
         {
             _phoneRepository = phoneRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -79,6 +81,40 @@ namespace PhoneWebApi.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(phone);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePhone([FromBody] PhoneDto phonecreate)
+        {
+            if(phonecreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var phone = _phoneRepository.GetPhones()
+                .Where(p => p.Name.Trim().ToUpper() == phonecreate.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if(phone != null)
+            {
+                ModelState.AddModelError("", "phone already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var phoneMap = _mapper.Map<Phone>(phonecreate);
+
+            phoneMap.Users = _userRepository.GetUsers();    
+
+            if(!_phoneRepository.CreatePhone(phoneMap))
+            {
+                ModelState.AddModelError("", "something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("succesfully created");
         }
 
     }
