@@ -13,13 +13,11 @@ namespace PhoneWebApi.Controllers
     public class PhoneController : Controller
     {
         private readonly IPhoneRepository _phoneRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public PhoneController(IPhoneRepository phoneRepository,IUserRepository userRepository, IMapper mapper)
+        public PhoneController(IPhoneRepository phoneRepository, IMapper mapper)
         {
             _phoneRepository = phoneRepository;
-            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -88,7 +86,7 @@ namespace PhoneWebApi.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePhone([FromBody] PhoneDto phonecreate)
+        public IActionResult CreatePhone([FromBody] PhoneDto phonecreate, [FromQuery] int categoryId)
         {
             if(phonecreate == null)
             {
@@ -107,11 +105,9 @@ namespace PhoneWebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var phoneMap = _mapper.Map<Phone>(phonecreate);
+            var phoneMap = _mapper.Map<Phone>(phonecreate);           
 
-            phoneMap.Users = _userRepository.GetUsers();    
-
-            if(!_phoneRepository.CreatePhone(phoneMap))
+            if(!_phoneRepository.CreatePhone(phoneMap,categoryId))
             {
                 ModelState.AddModelError("", "something went wrong while saving");
                 return StatusCode(500, ModelState);

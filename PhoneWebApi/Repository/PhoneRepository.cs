@@ -48,12 +48,19 @@ namespace PhoneWebApi.Repository
             return phone.Category;
         }
 
-        public bool CreatePhone(Phone phone)
+        public bool CreatePhone(Phone phone, int categoryId)
         {
+            phone.Category = _context.categories.Where(c => c.Id == categoryId).FirstOrDefault();
             _context.Add(phone);
             return save();
         }
 
+        public bool CreatePhone(Phone phone, string categoryName)
+        {
+            phone.Category = _context.categories.Where(c => c.PhoneType == categoryName).FirstOrDefault();
+            _context.Add(phone);
+            return save();
+        }
         public bool save()
         {
          var saved = _context.SaveChanges();
