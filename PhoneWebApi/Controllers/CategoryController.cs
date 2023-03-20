@@ -104,20 +104,21 @@ namespace PhoneWebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var category = _categoryRepository.GetAllCategories()
-            .Where(c => c.PhoneType.ToUpper() == categorycreate.PhoneType.ToUpper());
+            var categoryExists = _categoryRepository.GetAllCategories()
+            .Where(c => c.PhoneType.Trim().ToUpper() == categorycreate.PhoneType.TrimEnd().ToUpper());
 
-            if(category != null)
+            if(categoryExists != null)
             {
                 ModelState.AddModelError("", "category already exists");
                 return StatusCode(422, ModelState);
             }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-           var categorymap = _mapper.Map<Category>(categorycreate);
+          
 
-            if (!_categoryRepository.CreateCategory(categorymap))
+            if (!_categoryRepository.CreateCategory(categorycreate))
             {
                 ModelState.AddModelError("", "something went wrong while saving");
                 return StatusCode(500, ModelState);
