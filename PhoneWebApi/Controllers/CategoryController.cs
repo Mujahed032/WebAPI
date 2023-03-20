@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PhoneWebApi.Dto;
 using PhoneWebApi.Interfaces;
 using PhoneWebApi.Models;
@@ -94,17 +95,34 @@ namespace PhoneWebApi.Controllers
                 return Ok(type);
         }
 
-        //[HttpPost]
-        //[ProducesResponseType (204)]
-        //[ProducesResponseType (400)]
-        //public IActionResult CreateCategory([FromBody] Category categorycreate)
-        //{
-        //    if (categorycreate == null )
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    var category = _categoryRepository.GetAllCategories()
-        //    .Where(c => c.PhoneType.Trim().ToUpper() = categorycreate.PhoneType.TrimEnd.())
-        //}
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] Category categorycreate)
+        {
+            if (categorycreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var category = _categoryRepository.GetAllCategories()
+            .Where(c => c.PhoneType.ToUpper() == categorycreate.PhoneType.ToUpper());
+
+            if(category != null)
+            {
+                ModelState.AddModelError("", "category already exists");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+           var categorymap = _mapper.Map<Category>(categorycreate);
+
+            if (!_categoryRepository.CreateCategory(categorymap))
+            {
+                ModelState.AddModelError("", "something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("succesfully created");
+        }
     }
 }
