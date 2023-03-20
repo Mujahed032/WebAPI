@@ -53,9 +53,10 @@ namespace PhoneWebApi.Repository
         {
            
            var phones = _context.phones.Include(p => p.Users).Where(ph => ph.Category.Id ==CategoryId).ToList();
-            var users = new List<User>();
+            HashSet<User> users = new HashSet<User>();
             foreach (var phone in phones)
-                users.AddRange(phone.Users);
+                foreach(var user in phone.Users)
+                users.Add(user);
             return users;
             
         }

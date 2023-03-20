@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PhoneWebApi.Dto;
 using PhoneWebApi.Interfaces;
 using PhoneWebApi.Models;
 
@@ -9,10 +11,12 @@ namespace PhoneWebApi.Controllers
     public class CategoryController:Controller
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,12 +37,14 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType (400)]
         public IActionResult GetPhonesByCategoryId(int categoryid)
         {
-            var phone = _categoryRepository.GetPhonesByCategory(categoryid);
+            if (!_categoryRepository.CategoriesExists(categoryid))
+                return NotFound(ModelState);
+            var phones = _mapper.Map<List<PhoneDto>>(_categoryRepository.GetPhonesByCategory(categoryid));
                 if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-                return Ok(phone);
+                return Ok(phones);
         }
 
         [HttpGet("users/{categoryid}")]
@@ -46,12 +52,14 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType (400)]
         public IActionResult  GetUsersByCategoryId(int categoryid)
         {
-            var user = _categoryRepository.GetPhonesByCategory(categoryid);
+            if (!_categoryRepository.CategoriesExists(categoryid))
+                return NotFound(ModelState);
+            var users = _mapper.Map<List<UserDto>>(_categoryRepository.GetUsersByCategory(categoryid));
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(user);
+            return Ok(users);
         }
 
         [HttpGet("categoryid")]
