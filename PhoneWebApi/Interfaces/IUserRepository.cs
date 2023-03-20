@@ -13,7 +13,9 @@ namespace PhoneWebApi.Interfaces
         public ICollection<Phone> GetPhonesByUser(int userId);
 
         public bool DoesUserExists(int UserID);
+        public bool CreateUser(User User);
 
+        public bool save();
 
     }
 }

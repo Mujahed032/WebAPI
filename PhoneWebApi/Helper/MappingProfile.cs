@@ -11,6 +11,7 @@ namespace PhoneWebApi.Helper
             CreateMap<Phone, PhoneDto>();
             CreateMap<PhoneDto, Phone>();
             CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
         }
     }
 }

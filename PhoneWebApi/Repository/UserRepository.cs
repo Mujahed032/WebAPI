@@ -14,6 +14,11 @@ namespace PhoneWebApi.Repository
             _context = context;
         }
 
+        public bool CreateUser(User User)
+        {
+            _context.Add(User);
+            return save();
+        }
 
         public bool DoesUserExists(int UserID)
         {
@@ -39,6 +44,13 @@ namespace PhoneWebApi.Repository
         public ICollection<User> GetUsers()
         {
             return _context.users.OrderBy(u => u.Id).ToList();
+        }
+
+        public bool save()
+        {
+            var saved = _context.SaveChanges();
+
+            return saved > 0 ? true : false;
         }
     }
 }

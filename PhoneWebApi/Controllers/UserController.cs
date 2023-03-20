@@ -82,6 +82,36 @@ namespace PhoneWebApi.Controllers
                 return Ok(user);
             }
         }
-        
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateUser([FromBody] UserDto usercreate)
+        {
+            if(usercreate == null)
+            {
+                return BadRequest (ModelState);
+            }
+            var user = _userRepository.GetUsers()
+            .Where(u => u.Name.Trim().ToUpper() == usercreate.Name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if(user != null)
+            {
+                ModelState.AddModelError("", "user already exists");
+                return StatusCode(422, ModelState);
+            }
+
+           if(!ModelState.IsValid)
+           return BadRequest(ModelState);
+            
+
+            var userMap = _mapper.Map<User>(usercreate);
+
+            if(!_userRepository.CreateUser(userMap))
+            {
+                ModelState.AddModelError("", "something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("succesfully created");
+        }
     }
 }
