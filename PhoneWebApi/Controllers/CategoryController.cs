@@ -4,7 +4,7 @@ using PhoneWebApi.Models;
 
 namespace PhoneWebApi.Controllers
 {
-    [Route("api/{Controller}")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class CategoryController:Controller
     {

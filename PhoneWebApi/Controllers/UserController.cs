@@ -8,7 +8,7 @@ using PhoneWebApi.Models;
 
 namespace PhoneWebApi.Controllers
 {
-    [Route("api/Controller")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class UserController:Controller
     {
@@ -33,17 +33,17 @@ namespace PhoneWebApi.Controllers
           return Ok(user);
         }
 
-        [HttpGet("/Phone/{userid}")]
+        [HttpGet("{userId}/Phones")]
         [ProducesResponseType (200, Type = typeof(IEnumerable<Phone>))]
         [ProducesResponseType (400)]
         public IActionResult GetPhonesByUser(int userId)
         {
-            var phone = _mapper.Map<List<PhoneDto>>(_userRepository.GetPhonesByUser(userId));
+            var phones = _mapper.Map<List<PhoneDto>>(_userRepository.GetPhonesByUser(userId));
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(phone);
+            return Ok(phones);
         }
 
 

@@ -41,6 +41,8 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         public IActionResult GetUsersByPhone(int phoneId)
         {
+            if(!_phoneRepository.PhoneExists(phoneId))
+                return NotFound(ModelState);
             var user = _mapper.Map<List<UserDto>>(_phoneRepository.GetUsersByPhone(phoneId));
 
             if (!ModelState.IsValid)
