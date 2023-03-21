@@ -19,5 +19,7 @@ namespace PhoneWebApi.Interfaces
         public bool CreatePhone(Phone phone, int categoryId);
 
         public bool save();
+
+        public bool UpdatePhone(Phone phone);
     }
 }

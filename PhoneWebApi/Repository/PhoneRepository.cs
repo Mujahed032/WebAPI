@@ -67,5 +67,11 @@ namespace PhoneWebApi.Repository
 
            return saved > 0 ? true : false;
         }
+
+        public bool UpdatePhone(Phone phone)
+        {
+            _context.Update(phone);
+            return save();
+        }
     }
 }

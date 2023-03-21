@@ -17,5 +17,7 @@ namespace PhoneWebApi.Interfaces
 
         public bool save();
 
+        public bool UpdateUser(User User);
+
     }
 }

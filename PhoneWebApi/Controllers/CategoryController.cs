@@ -100,7 +100,7 @@ namespace PhoneWebApi.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateCategory([FromBody] Category categorycreate)
         {
-            if (categorycreate == null)
+            if (CreateCategory == null)
             {
                 return BadRequest(ModelState);
             }
@@ -124,6 +124,37 @@ namespace PhoneWebApi.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok("succesfully created");
+        }
+
+        [HttpPut("{categoryid}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCategory(int categoryid, [FromBody] Category UpdatedCategory)
+        {
+            if(UpdateCategory == null)
+                return BadRequest(ModelState);
+
+            if(categoryid != UpdatedCategory.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!_categoryRepository.CategoriesExists(categoryid))
+            {
+                return NotFound();
+            }
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!_categoryRepository.UpdateCategory(UpdatedCategory))
+            {
+                ModelState.AddModelError("", "something went wrong while updating");
+                    return StatusCode(500, ModelState);
+            }
+            return Ok();
         }
     }
 }

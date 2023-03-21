@@ -114,6 +114,34 @@ namespace PhoneWebApi.Controllers
             }
             return Ok("succesfully created");
         }
+        [HttpPut("{phoneid}")]
+        [ProducesResponseType (400)]
+        [ProducesResponseType (204)]
+        [ProducesResponseType (404)]
+        public IActionResult UpdatePhone(int phoneid, [FromBody] PhoneDto UpdatedPhone)
+        {
+            if(UpdatePhone == null)
+             return BadRequest(ModelState);
+
+            if(phoneid != UpdatedPhone.Id)
+            { return BadRequest(ModelState); }
+
+            if(!_phoneRepository.PhoneExists(phoneid)) 
+            { return NotFound(); }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var phoneMap = _mapper.Map<Phone>(UpdatedPhone);
+            if(!_phoneRepository.UpdatePhone(phoneMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating");
+                    return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
 
     }
 }
