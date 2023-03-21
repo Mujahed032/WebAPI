@@ -142,5 +142,30 @@ namespace PhoneWebApi.Controllers
             }
             return Ok();
         }
+
+        [HttpDelete("{userid}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteUser(int userid)
+        {
+            if(!_userRepository.DoesUserExists(userid))
+            {
+                return NotFound();
+            }
+
+            var UserTodelete = _userRepository.GetUserByID(userid);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_userRepository.DeleteUser(UserTodelete))
+            {
+                ModelState.AddModelError("", "something went wrong while deleting");
+                return StatusCode(500, ModelState); 
+            }
+
+            return Ok();
+        }
     }
 }

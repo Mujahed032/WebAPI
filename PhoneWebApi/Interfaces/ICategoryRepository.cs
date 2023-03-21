@@ -22,5 +22,7 @@ namespace PhoneWebApi.Interfaces
       public bool Save();
 
         public bool UpdateCategory(Category category);
+
+        public bool DeleteCategory(Category category);
     }
 }

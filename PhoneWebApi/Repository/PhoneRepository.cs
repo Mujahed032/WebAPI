@@ -73,5 +73,11 @@ namespace PhoneWebApi.Repository
             _context.Update(phone);
             return save();
         }
+
+        public bool DeletePhone(Phone phone)
+        {
+            _context.Remove(phone);
+            return save();
+        }
     }
 }

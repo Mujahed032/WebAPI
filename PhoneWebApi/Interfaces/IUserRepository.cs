@@ -19,5 +19,7 @@ namespace PhoneWebApi.Interfaces
 
         public bool UpdateUser(User User);
 
+        public bool DeleteUser(User user);
+
     }
 }

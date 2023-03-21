@@ -20,6 +20,12 @@ namespace PhoneWebApi.Repository
             return save();
         }
 
+        public bool DeleteUser(User user)
+        {
+            _context.Remove(user);
+            return save();
+        }
+
         public bool DoesUserExists(int UserID)
         {
             return _context.users.Any(u => u.Id == UserID);

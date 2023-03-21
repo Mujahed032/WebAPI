@@ -21,5 +21,7 @@ namespace PhoneWebApi.Interfaces
         public bool save();
 
         public bool UpdatePhone(Phone phone);
+
+        public bool DeletePhone(Phone phone);
     }
 }

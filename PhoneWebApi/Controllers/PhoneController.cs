@@ -143,5 +143,29 @@ namespace PhoneWebApi.Controllers
             return Ok();
         }
 
+        [HttpDelete("{phoneid}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePhone(int phoneid)
+        {
+            if(!_phoneRepository.PhoneExists(phoneid))
+            {
+                return NotFound();
+            }
+
+            var DeleteToPhone = _phoneRepository.GetPhone(phoneid);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_phoneRepository.DeletePhone(DeleteToPhone))
+            {
+                ModelState.AddModelError("", "something went wrong while deleting");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
+
     }
 }
