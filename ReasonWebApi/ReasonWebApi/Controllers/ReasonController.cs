@@ -20,21 +20,88 @@ namespace ReasonWebApi.Controllers
           
         }
 
+
+
+
         [HttpGet]
-        public async Task<IActionResult> GetAllReasons()
+        public async Task<IActionResult> GetAllReasonsAsync(string reasonName = null, int pageNumber = 1, int pageSize = 10 ,string sortBy = "ReasonId", string sortOrder = "asc")
         {
             try
             {
-                var reasons = await _reasonRepository.GetAllReasonsAsync();
+                IEnumerable<Reason> reasons;
 
+                if (!string.IsNullOrEmpty(reasonName))
+                {
+                    reasons = await _reasonRepository.GetAllReasonsAsync(reasonName, pageNumber, pageSize, sortBy, sortOrder);
+                }
+                else
+                {
+                    reasons = await _reasonRepository.GetAllReasonsAsync(pageNumber: pageNumber, pageSize: pageSize, sortBy: sortBy, sortOrder: sortOrder);
+                }
 
-                return Ok(reasons);
+                if (!reasons.Any())
+                {
+                    return NotFound("No reasons found.");
+                }
+
+                IEnumerable<object> reasonDtos;
+
+                if (!string.IsNullOrEmpty(reasonName))
+                {
+                    reasonDtos = reasons.Select(r => new GetByNameDto
+                    {
+                        ReasonId = r.ReasonId,
+                        IsPublished = r.IsPublished,
+                        PrimaryReason = r.PrimaryReason,
+                        ReasonName = r.ReasonName,
+                        ReasonCode = r.ReasonCode,
+                        ReasonType = r.ReasonType,
+                        ThirdPartyNumber = r.ThirdPartyNumber,
+                        Description = r.Description,
+                        PublishedBy = r.PublishedBy,
+                        UpdatedBy = r.UpdatedBy
+                    });
+                }
+                else
+                {
+                    reasonDtos = reasons.Select(r => new ReasonDto
+                    {
+                        ReasonId = r.ReasonId,
+                        IsPublished = r.IsPublished,
+                        PrimaryReason = r.PrimaryReason,
+                        ReasonName = r.ReasonName,
+                        ReasonCode = r.ReasonCode,
+                        ReasonType = r.ReasonType,
+                        ThirdPartyNumber = r.ThirdPartyNumber,
+                        Description = r.Description,
+                        PublishedBy = r.PublishedBy,
+                        DatePublished = r.DatePublished,
+                        DisplayOnWeb = r.DisplayOnWeb,
+                        SortOrder = r.SortOrder,
+                        Tag = r.Tag,
+                        Comments = r.Comments,
+                        IPAddress = r.IPAddress,
+                        CreatedBy = r.CreatedBy,
+                        DateCreated = r.DateCreated,
+                        UpdatedBy = r.UpdatedBy,
+                        LastUpdated = r.LastUpdated,
+                        IsDeleted = r.IsDeleted,
+                        DeletedBy = r.DeletedBy,
+                        DateDeleted = r.DateDeleted
+                    });
+                }
+
+                return Ok(reasonDtos);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+
+
+
         [HttpPost]
         public async Task<ActionResult<AddReasonDto>> AddReason([FromBody] AddReasonDto reasonDTO)
         {
@@ -63,6 +130,9 @@ namespace ReasonWebApi.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+
+
+
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReason(int id, [FromBody] UpdateReasonDto reasonDTO)
@@ -100,6 +170,8 @@ namespace ReasonWebApi.Controllers
         }
 
 
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReasonById(int id)
         {
@@ -109,6 +181,10 @@ namespace ReasonWebApi.Controllers
                 if (reason == null || reason.ReasonId == 0)
                 {
                     return NotFound("Reason not found.");
+                }
+                else if (reason.ReasonName == "Record has been deleted.")
+                {
+                    return StatusCode(410, "Record has been deleted.");
                 }
 
                 var reasonDto = new GetByIdDto
@@ -132,38 +208,8 @@ namespace ReasonWebApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchReasonByName(string reasonName)
-        {
-            try
-            {
-                var reasons = await _reasonRepository.SearchReasonByNameAsync(reasonName);
-                if (reasons == null || !reasons.Any())
-                {
-                    return NotFound("No reasons found.");
-                }
-
-                var reasonDtos = reasons.Select(reason => new GetByNameDto
-                {
-                    ReasonId = reason.ReasonId,
-                    IsPublished = reason.IsPublished,
-                    PrimaryReason = reason.PrimaryReason,
-                    ReasonName = reason.ReasonName,
-                    ReasonCode = reason.ReasonCode,
-                    ReasonType = reason.ReasonType,
-                    ThirdPartyNumber = reason.ThirdPartyNumber,
-                    Description = reason.Description,
-                    PublishedBy = reason.PublishedBy,
-                    UpdatedBy = reason.UpdatedBy
-                });
-
-                return Ok(reasonDtos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
+      
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReason(int id, [FromQuery] string deletedBy)
         {
