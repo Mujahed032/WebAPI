@@ -1,0 +1,9 @@
+2023-10-27 10:19:50.906 +05:30 [INF] Starting up the Reason application
+2023-10-27 10:23:00.618 +05:30 [INF] Retrieved reasons with pagination and filtering. ReasonName: null, PageNumber: 1, PageSize: 10, SortBy: ReasonId, SortOrder: asc
+2023-10-27 10:23:00.668 +05:30 [INF] Retrieved reasons successfully.
+2023-10-27 10:23:18.944 +05:30 [INF] Retrieved reasons with pagination and filtering. ReasonName: null, PageNumber: 1, PageSize: 1, SortBy: ReasonId, SortOrder: asc
+2023-10-27 10:23:18.944 +05:30 [INF] Retrieved reasons successfully.
+2023-10-27 10:23:54.719 +05:30 [INF] Retrieved reasons with pagination and filtering. ReasonName: null, PageNumber: 4, PageSize: 10, SortBy: ReasonId, SortOrder: asc
+2023-10-27 10:23:54.719 +05:30 [WRN] No reasons found.
+2023-10-27 10:24:02.183 +05:30 [INF] Retrieved reasons with pagination and filtering. ReasonName: null, PageNumber: 1, PageSize: 10, SortBy: ReasonId, SortOrder: asc
+2023-10-27 10:24:02.183 +05:30 [INF] Retrieved reasons successfully.

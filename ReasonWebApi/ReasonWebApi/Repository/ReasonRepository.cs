@@ -2,6 +2,7 @@
 using ReasonWebApi.Dto;
 using ReasonWebApi.Interface;
 using ReasonWebApi.Models;
+using Serilog;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -53,6 +54,7 @@ namespace ReasonWebApi.Repository
                     sqlQuery += " AND ReasonName LIKE '%' + @ReasonName + '%'";
                 }
                 sqlQuery += $" ORDER BY {sortBy} {sortOrder} OFFSET {pageSize * (pageNumber - 1)} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+
                 using (var command = new SqlCommand(sqlQuery, connection))
                 {
                     if (!string.IsNullOrEmpty(reasonName))
@@ -61,38 +63,48 @@ namespace ReasonWebApi.Repository
                     }
                     command.Parameters.AddWithValue("@Offset", (pageNumber - 1) * pageSize);
                     command.Parameters.AddWithValue("@PageSize", pageSize);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var reason = new Reason
-                            {
-                                ReasonId = (int)reader["ReasonId"],
-                                IsPublished = (bool)reader["IsPublished"],
-                                PrimaryReason = (bool)reader["PrimaryReason"],
-                                ReasonName = (string)reader["ReasonName"],
-                                ReasonCode = (int)reader["ReasonCode"],
-                                ReasonType = (string)reader["ReasonType"],
-                                ThirdPartyNumber = (int)reader["ThirdPartyNumber"],
-                                Description = (string)reader["Description"],
-                                PublishedBy = reader["PublishedBy"] != DBNull.Value ? (string)reader["PublishedBy"] : null,
-                                DatePublished = reader["DatePublished"] != DBNull.Value ? (DateTime)reader["DatePublished"] : DateTime.MinValue,
-                                DisplayOnWeb = reader["DisplayOnWeb"] != DBNull.Value && (bool)reader["DisplayOnWeb"],
-                                SortOrder = reader["SortOrder"] != DBNull.Value ? (int)reader["SortOrder"] : 0,
-                                Tag = reader["Tag"] != DBNull.Value ? (string)reader["Tag"] : null,
-                                Comments = reader["Comments"] != DBNull.Value ? (string)reader["Comments"] : null,
-                                IPAddress = (string)reader["IPAddress"],
-                                CreatedBy = (string)reader["CreatedBy"],
-                                DateCreated = reader["DateCreated"] != DBNull.Value ? (DateTime)reader["DateCreated"] : DateTime.MinValue,
-                                UpdatedBy = reader["UpdatedBy"] != DBNull.Value ? (string)reader["UpdatedBy"] : null,
-                                LastUpdated = reader["LastUpdated"] != DBNull.Value ? (DateTime)reader["LastUpdated"] : DateTime.MinValue,
-                                IsDeleted = (bool)reader["IsDeleted"],
-                                DeletedBy = reader["DeletedBy"] != DBNull.Value ? (string)reader["DeletedBy"] : null,
-                                DateDeleted = reader["DateDeleted"] != DBNull.Value ? (DateTime)reader["DateDeleted"] : DateTime.MinValue
-                            };
 
-                            reasons.Add(reason);
+                    try
+                    {
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var reason = new Reason
+                                {
+                                    ReasonId = (int)reader["ReasonId"],
+                                    IsPublished = (bool)reader["IsPublished"],
+                                    PrimaryReason = (bool)reader["PrimaryReason"],
+                                    ReasonName = (string)reader["ReasonName"],
+                                    ReasonCode = (int)reader["ReasonCode"],
+                                    ReasonType = (string)reader["ReasonType"],
+                                    ThirdPartyNumber = (int)reader["ThirdPartyNumber"],
+                                    Description = (string)reader["Description"],
+                                    PublishedBy = reader["PublishedBy"] != DBNull.Value ? (string)reader["PublishedBy"] : null,
+                                    DatePublished = reader["DatePublished"] != DBNull.Value ? (DateTime)reader["DatePublished"] : DateTime.MinValue,
+                                    DisplayOnWeb = reader["DisplayOnWeb"] != DBNull.Value && (bool)reader["DisplayOnWeb"],
+                                    SortOrder = reader["SortOrder"] != DBNull.Value ? (int)reader["SortOrder"] : 0,
+                                    Tag = reader["Tag"] != DBNull.Value ? (string)reader["Tag"] : null,
+                                    Comments = reader["Comments"] != DBNull.Value ? (string)reader["Comments"] : null,
+                                    IPAddress = (string)reader["IPAddress"],
+                                    CreatedBy = (string)reader["CreatedBy"],
+                                    DateCreated = reader["DateCreated"] != DBNull.Value ? (DateTime)reader["DateCreated"] : DateTime.MinValue,
+                                    UpdatedBy = reader["UpdatedBy"] != DBNull.Value ? (string)reader["UpdatedBy"] : null,
+                                    LastUpdated = reader["LastUpdated"] != DBNull.Value ? (DateTime)reader["LastUpdated"] : DateTime.MinValue,
+                                    IsDeleted = (bool)reader["IsDeleted"],
+                                    DeletedBy = reader["DeletedBy"] != DBNull.Value ? (string)reader["DeletedBy"] : null,
+                                    DateDeleted = reader["DateDeleted"] != DBNull.Value ? (DateTime)reader["DateDeleted"] : DateTime.MinValue
+                                };
+
+                                reasons.Add(reason);
+                            }
                         }
+
+                        Log.Information("Retrieved reasons with pagination and filtering. ReasonName: {ReasonName}, PageNumber: {PageNumber}, PageSize: {PageSize}, SortBy: {SortBy}, SortOrder: {SortOrder}", reasonName, pageNumber, pageSize, sortBy, sortOrder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Error occurred in GetAllReasonsAsync. ReasonName: {ReasonName}, PageNumber: {PageNumber}, PageSize: {PageSize}, SortBy: {SortBy}, SortOrder: {SortOrder}", reasonName, pageNumber, pageSize, sortBy, sortOrder);
                     }
                 }
             }
@@ -121,7 +133,8 @@ namespace ReasonWebApi.Repository
 
                         if ((bool)reader["IsDeleted"])
                         {
-                            return new Reason { ReasonName = "Record has been deleted." }; 
+                            Log.Information("Record has been deleted.");
+                            return new Reason { ReasonName = "Record has been deleted." };
                         }
                         return new Reason
                         {
@@ -139,7 +152,8 @@ namespace ReasonWebApi.Repository
                     }
                 }
             }
-            
+
+            Log.Information("No reason found with the given ID.");
             return new Reason { ReasonName = "No reason found with the given ID." };
         }
 
@@ -173,10 +187,6 @@ namespace ReasonWebApi.Repository
 
             return reason;
         }
-
-
-
-
 
         public async Task<Reason> UpdateReasonAsync(int Id,Reason reason)
         {

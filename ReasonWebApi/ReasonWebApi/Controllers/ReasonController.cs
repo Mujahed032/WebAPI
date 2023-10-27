@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReasonWebApi.Dto;
 using ReasonWebApi.Interface;
 using ReasonWebApi.Models;
+using Serilog;
 
 namespace ReasonWebApi.Controllers
 {
@@ -41,6 +42,7 @@ namespace ReasonWebApi.Controllers
 
                 if (!reasons.Any())
                 {
+                    Log.Warning("No reasons found.");
                     return NotFound("No reasons found.");
                 }
 
@@ -91,10 +93,12 @@ namespace ReasonWebApi.Controllers
                     });
                 }
 
+                Log.Information("Retrieved reasons successfully.");
                 return Ok(reasonDtos);
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Internal server error: {ErrorMessage}", ex.Message);
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
@@ -180,10 +184,12 @@ namespace ReasonWebApi.Controllers
                 var reason = await _reasonRepository.GetReasonByIdAsync(id);
                 if (reason == null || reason.ReasonId == 0)
                 {
+                    Log.Information($"No reason found with ID: {id}");
                     return NotFound("Reason not found.");
                 }
                 else if (reason.ReasonName == "Record has been deleted.")
                 {
+                    Log.Information($"Record with ID: {id} has been deleted.");
                     return StatusCode(410, "Record has been deleted.");
                 }
 
@@ -201,15 +207,19 @@ namespace ReasonWebApi.Controllers
                     UpdatedBy = reason.UpdatedBy
                 };
 
+                Log.Information($"Retrieved reason with ID: {id}");
                 return Ok(reasonDto);
             }
             catch (Exception ex)
             {
+                Log.Error(ex, $"Error occurred in GetReasonById for ID: {id}");
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-      
-       
+
+
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReason(int id, [FromQuery] string deletedBy)
         {
