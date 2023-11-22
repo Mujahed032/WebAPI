@@ -48,7 +48,7 @@ namespace ReasonWebApi.Repository
             {
                 await connection.OpenAsync();
 
-                string sqlQuery = "SELECT * FROM tblReason WHERE IsDeleted = 0";
+                string sqlQuery = "SELECT * FROM tblReason ";
                 if (!string.IsNullOrEmpty(reasonName))
                 {
                     sqlQuery += " AND ReasonName LIKE '%' + @ReasonName + '%'";
