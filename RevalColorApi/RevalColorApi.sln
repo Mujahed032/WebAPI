@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevalColorApi", "RevalColorApi\RevalColorApi.csproj", "{19A5E022-BE11-4CFE-A734-140146F80BD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revalsys.DataAccess", "Revalsys.DataAccess\Revalsys.DataAccess.csproj", "{84420923-AA23-47A5-9C73-14E2E15EA885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revalsys.Properties", "Revalsys.Properties\Revalsys.Properties.csproj", "{8784390D-B5C4-48B1-A651-37B24FDAD7D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revalsys.Utilities", "Revalsys.Utilities\Revalsys.Utilities.csproj", "{EE585821-576D-4945-AC8A-034E8B1AD1DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revalsys.Common", "Revalsys.Common\Revalsys.Common.csproj", "{8B2FEEB3-17D5-4BF8-B4A5-9FCF92603635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revalsys.BusinessLogic", "Revalsys.BusinessLogic\Revalsys.BusinessLogic.csproj", "{C3480663-62A6-4D86-8C8C-A23631390FED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19A5E022-BE11-4CFE-A734-140146F80BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A5E022-BE11-4CFE-A734-140146F80BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A5E022-BE11-4CFE-A734-140146F80BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A5E022-BE11-4CFE-A734-140146F80BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84420923-AA23-47A5-9C73-14E2E15EA885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84420923-AA23-47A5-9C73-14E2E15EA885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84420923-AA23-47A5-9C73-14E2E15EA885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84420923-AA23-47A5-9C73-14E2E15EA885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8784390D-B5C4-48B1-A651-37B24FDAD7D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8784390D-B5C4-48B1-A651-37B24FDAD7D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8784390D-B5C4-48B1-A651-37B24FDAD7D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8784390D-B5C4-48B1-A651-37B24FDAD7D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE585821-576D-4945-AC8A-034E8B1AD1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE585821-576D-4945-AC8A-034E8B1AD1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE585821-576D-4945-AC8A-034E8B1AD1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE585821-576D-4945-AC8A-034E8B1AD1DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2FEEB3-17D5-4BF8-B4A5-9FCF92603635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2FEEB3-17D5-4BF8-B4A5-9FCF92603635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2FEEB3-17D5-4BF8-B4A5-9FCF92603635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2FEEB3-17D5-4BF8-B4A5-9FCF92603635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3480663-62A6-4D86-8C8C-A23631390FED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3480663-62A6-4D86-8C8C-A23631390FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3480663-62A6-4D86-8C8C-A23631390FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3480663-62A6-4D86-8C8C-A23631390FED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7096000-0554-4548-AC26-A5F44A9D56E6}
+	EndGlobalSection
+EndGlobal
